@@ -1,32 +1,20 @@
-#!groovy
-//  groovy Jenkinsfile
-properties([disableConcurrentBuilds()])\
-
-pipeline  {
-        agent { 
-           label ''
-        }
-
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
-        timestamps()
-    }
+pipeline {
+    agent any
     stages {
-        stage("Git clone") {
+        stage('Hello') {
             steps {
-                sh '''
-                cd /home/ubuntu/
-                git clone https://github.com/Vlad1ck228/test           
-                '''
+                echo 'Hello World 2'
             }
-        }    
-        stage("Work") {
+        }
+        stage('Shell1') {
             steps {
-                sh '''
-                cd /home/ubuntu/zabbix
-                docker-compose up -d
-                '''
+                sh 'ls /etc/netplan'
             }
-        }   
+        }
+        stage('Shell2') {
+            steps {
+                sh 'ls /home/'
+            }
+        }
     }
 }
