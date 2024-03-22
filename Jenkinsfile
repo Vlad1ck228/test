@@ -1,20 +1,31 @@
 pipeline {
     agent any
+    
     stages {
-        stage('Hello') {
+        stage('Build') {
             steps {
-                echo 'Hello World 2'
+                script {
+                    docker.build('my-website1:latest')
+                }
             }
         }
-        stage('Shell1') {
+        stage('Test') {
             steps {
-                sh 'ls /etc/netplan'
             }
         }
-        stage('Shell2') {
+        stage('Deploy') {
             steps {
-                sh 'ls /home/'
+                script {
+                    docker.withRegistry('https://hub.docker.com/u/vladhl', 'vladhl') {
+                        docker.image('my-website:latest').push('latest')
+                    }
+                }
             }
+        }
+    }
+    
+    post {
+        always {
         }
     }
 }
